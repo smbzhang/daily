@@ -1,0 +1,24 @@
+这是我在CENTOS7 上面配好的支持 vim-go，ycm的vim，以及vim需要的python版本
+
+按照 vim-go-ide 来操作就好了。但是那是默认你能翻墙的。好多go的工具你下不下来，所以这里我下载好了在go tar包里面。
+
+ycm 和 vim-go 需要的vim版本很高，这里我下载了8.1版本的vim，需要自己进行编译和安装。 ./configure --enable-multibyte --enable-rubyinterp=yes --enable-pythoninterp=yes --enable-python3interp=yes
+装完之后，运行 vim --version | grep python 看一下是不是 +, 如果都是 - 就是自己机子的python 有问题
+
+vim 需要的插件和配置什么的我都放到 vim-plugin tar 包里面了，不用自己下载了，因为有可能是一个不能连外网的机子
+
+还有需要注意自己的gcc版本需要完全支持C++11，否则ycm插件会编译失败。这里建议直接安装一个gcc482在自己的目录，改一下环境变量
+
+进入 ycm 目录运行 install.py 的时候要保证你的python是python2.7.15，并且是自己动态编译的，使用gcc482（自己安装的）否则就算运行成功，打开vim的时候也会出现 not found python, 或者成功进去，但是 ycm server 启动失败。
+
+python 包的话我下载下来了，./configure --prefix=一定要自己的安装目录，不要影响别人 --enable-shared  --enable-optimizations
+
+然后去ycm的插件目录下面去运行python install.py --go-completer 
+
+
+整个过程需要保证自己的 GO 环境变量正确哈
+
+
+
+
+上面使用的包我都上传到了我的百度云vim-go-ide-ycm这个目录下面

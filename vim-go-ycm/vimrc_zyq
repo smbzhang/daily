@@ -1,0 +1,273 @@
+set backspace=indent,eol,start
+set wildmenu
+set number
+set nocompatible
+set autoindent
+set history=50
+set ruler
+set showcmd
+set incsearch
+set ai
+set showmatch
+set showmode
+set hlsearch
+
+" This is set for tab & shiftWidth
+" open cindent 类似 C 语言程序缩进
+" set ci
+set ts=4
+set expandtab
+set sw=4
+" set the encode and decode 
+set fileencodings=utf-8,ucs-bom,gb18030,gbk,gb2312,cp936
+set termencoding=utf-8
+set encoding=utf-8
+set mouse=a
+set cursorline "突出显示当前行
+" 开启实时搜索
+set incsearch
+" 搜索时大小写不敏感
+set ignorecase
+" 我最喜欢的配色
+colo ron
+
+"==============================================================================
+" 插件配置 
+"==============================================================================
+
+" 插件开始的位置
+call plug#begin('~/.vim/plugged')
+
+" Vim 中文文档
+Plug 'yianwillis/vimcdoc'
+
+" Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
+" 可以快速对齐的插件
+Plug 'junegunn/vim-easy-align'
+
+" 用来提供一个导航目录的侧边栏
+Plug 'scrooloose/nerdtree'
+
+" 可以使 nerdtree Tab 标签的名称更友好些
+Plug 'jistr/vim-nerdtree-tabs'
+
+" 可以在导航目录中看到 git 版本信息
+Plug 'Xuyuanp/nerdtree-git-plugin'
+
+" 查看当前代码文件中的变量和函数列表的插件，
+" 可以切换和跳转到代码中对应的变量和函数的位置
+" 大纲式导航, Go 需要 https://github.com/jstemmer/gotags 支持
+Plug 'majutsushi/tagbar'
+
+" 自动补全括号的插件，包括小括号，中括号，以及花括号
+Plug 'jiangmiao/auto-pairs'
+
+" Vim状态栏插件，包括显示行号，列号，文件类型，文件名，以及Git状态
+Plug 'vim-airline/vim-airline'
+
+" 有道词典在线翻译
+Plug 'ianva/vim-youdao-translater'
+
+" 代码自动完成，安装完插件还需要额外配置才可以使用
+Plug 'Valloric/YouCompleteMe'
+
+" 可以在文档中显示 git 信息
+Plug 'airblade/vim-gitgutter'
+
+
+" 下面两个插件要配合使用，可以自动生成代码块
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
+" 配色方案
+" colorscheme gruvbox 
+"Plug 'morhetz/gruvbox'
+
+" colorscheme one 
+"Plug 'rakr/vim-one'
+"Plug 'altercation/vim-colors-solarized'
+
+" go 主要插件
+Plug 'fatih/vim-go', { 'tag': '*' }
+" go 中的代码追踪，输入 gd 就可以自动跳转
+Plug 'dgryski/vim-godef'
+
+" markdown 插件
+Plug 'iamcco/mathjax-support-for-mkdp'
+Plug 'iamcco/markdown-preview.vim'
+
+" 自动生成注释的插件
+Plug 'scrooloose/nerdcommenter'
+
+" 插件结束的位置，插件全部放在此行上面
+call plug#end()
+
+"==============================================================================
+" 光标随着插入模式改变形状
+" 参考： https://vim.fandom.com/wiki/Change_cursor_shape_in_different_modes
+"==============================================================================
+if has("autocmd")
+	au VimEnter,InsertLeave * silent execute '!echo -ne "\e[2 q"' | redraw!
+	au InsertEnter,InsertChange *
+		\ if v:insertmode == 'i' |
+		\   silent execute '!echo -ne "\e[6 q"' | redraw! |
+		\ elseif v:insertmode == 'r' |
+		\   silent execute '!echo -ne "\e[4 q"' | redraw! |
+		\ endif
+	au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
+endif
+
+"==============================================================================
+" vim 的 session 管理
+"==============================================================================
+"
+" 自动保存 session
+autocmd VimLeave * mks! ~/.vim/session.vim
+" 加载 session 的快捷键
+nmap <Leader>his :source ~/.vim/session.vim<CR>
+
+"==============================================================================
+" vim-go 插件
+"==============================================================================
+let g:go_fmt_command = "goimports" " 格式化将默认的 gofmt 替换
+let g:go_autodetect_gopath = 1
+let g:go_list_type = "quickfix"
+
+let g:go_version_warning = 1
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_generate_tags = 1
+
+let g:go_def_mode = 'gopls'
+let g:go_info_mode = 'gopls'
+let g:go_def_mapping_enabled = 1
+let g:go_code_completion_enabled = 1
+
+
+" 直接通过 go run 执行当前文件
+autocmd FileType go nmap <leader>r :GoRun %<CR>
+
+
+"==============================================================================
+" NERDTree 插件
+"==============================================================================
+
+" 打开和关闭NERDTree快捷键
+map <F3> :NERDTreeToggle<CR>
+nmap <M-m> :NERDTreeFind<CR>
+
+" 显示行号
+let NERDTreeShowLineNumbers=1
+" 打开文件时是否显示目录
+let NERDTreeAutoCenter=0
+" 是否显示隐藏文件
+let NERDTreeShowHidden=0
+" 设置宽度
+" let NERDTreeWinSize=31
+" 忽略一下文件的显示
+let NERDTreeIgnore=['\.pyc','\~$','\.swp']
+" 打开 vim 文件及显示书签列表
+let NERDTreeShowBookmarks=2
+
+" 在终端启动vim时，共享NERDTree
+" let g:nerdtree_tabs_open_on_console_startup=1
+
+"==============================================================================
+"  majutsushi/tagbar 插件
+"==============================================================================
+
+" majutsushi/tagbar 插件打开关闭快捷键
+nmap <F9> :TagbarToggle<CR>
+
+let g:tagbar_type_go = {
+	\ 'ctagstype' : 'go',
+	\ 'kinds'     : [
+		\ 'p:package',
+		\ 'i:imports:1',
+		\ 'c:constants',
+		\ 'v:variables',
+		\ 't:types',
+		\ 'n:interfaces',
+		\ 'w:fields',
+		\ 'e:embedded',
+		\ 'm:methods',
+		\ 'r:constructor',
+		\ 'f:functions'
+	\ ],
+	\ 'sro' : '.',
+	\ 'kind2scope' : {
+		\ 't' : 'ctype',
+		\ 'n' : 'ntype'
+	\ },
+	\ 'scope2kind' : {
+		\ 'ctype' : 't',
+		\ 'ntype' : 'n'
+	\ },
+	\ 'ctagsbin'  : 'gotags',
+	\ 'ctagsargs' : '-sort -silent'
+\ }
+
+
+"==============================================================================
+"  nerdtree-git-plugin 插件
+"==============================================================================
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ 'Ignored'   : '☒',
+    \ "Unknown"   : "?"
+    \ }
+
+let g:NERDTreeShowIgnoredStatus = 1
+nmap <Leader>pwd :NERDTreeCWD<CR>
+
+"==============================================================================
+"  Valloric/YouCompleteMe 插件
+"==============================================================================
+
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<M-j>', '<DOWN>']
+let g:ycm_key_list_previous_completion = ['<M-k>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<M-j>'
+
+" 关闭了提示再次触发的快捷键
+let g:ycm_key_invoke_completion = '<Leader>,'
+
+"==============================================================================
+" UltiSnips 插件
+"==============================================================================
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
+"==============================================================================
+"  其他插件配置
+"==============================================================================
+
+" markdwon 的快捷键
+map <silent> <F5> <Plug>MarkdownPreview
+map <silent> <F6> <Plug>StopMarkdownPreview
+
+" tab 标签页切换快捷键
+:nn <Leader>1 1gt
+:nn <Leader>2 2gt
+:nn <Leader>3 3gt
+:nn <Leader>4 4gt
+:nn <Leader>5 5gt
+:nn <Leader>6 6gt
+:nn <Leader>7 7gt
+:nn <Leader>8 8gt
+:nn <Leader>9 8gt
+:nn <Leader>0 :tablast<CR>
