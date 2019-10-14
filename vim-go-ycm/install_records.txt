@@ -18,7 +18,18 @@ python 包的话我下载下来了，./configure --prefix=一定要自己的安�
 
 整个过程需要保证自己的 GO 环境变量正确哈
 
+Go 语言的补全使用 gocode 来实现，gocode 的代码在/opt/go/workspace/src/github.com/nsf/gocode 下面，在这个目录下面运行 sh ./vim/update.sh
+这个操作会把 gocode 的vim需要的配置拷贝到 ~/.vim相应的目录下面。
+然后在 vimrc 中添加
+" gocode 自动补全的设置
+filetype plugin indent on
+syntax on
+set completeopt=longest,menu
+imap <C-Space> <C-x><C-o>
 
+使用 ctrl + x ctrl + o 就能补全了，这两个操作是连续操作。
+
+在vim中查看go的文档，光标移动到需要查看的代码上面，然后 :GoDoc 就可以在语言窗口看到了
 
 
 上面使用的包我都上传到了我的百度云vim-go-ide-ycm这个目录下面
